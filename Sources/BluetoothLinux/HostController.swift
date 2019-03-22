@@ -72,15 +72,15 @@ public extension HostController {
         }
     }
     
-    public static var controllers: [HostController] {
+    static var controllers: [HostController] {
         
         return (try? requestControllers()) ?? []
     }
     
-    public static var `default`: HostController? {
+    static var `default`: HostController? {
         
         guard let result = try? HCIGetRoute(nil),
-            let deviceIdentifier = result,
+            case let deviceIdentifier = result,
             let controller = try? HostController(identifier: deviceIdentifier)
             else { return nil }
         
@@ -97,7 +97,7 @@ public extension BluetoothAddress {
     /// Attempts to get the address from the underlying Bluetooth hardware.
     ///
     /// Fails if the Bluetooth HostController was disconnected or hardware failure.
-    public init(deviceIdentifier: HostController.Identifier) throws {
+    init(deviceIdentifier: HostController.Identifier) throws {
         
         self = try HCIDeviceAddress(deviceIdentifier)
     }
@@ -107,7 +107,7 @@ public extension BluetoothAddress {
 
 public extension HostController {
     
-    public typealias Error = BluetoothHostControllerError
+    typealias Error = BluetoothHostControllerError
 }
 
 // MARK: - Internal HCI Functions
